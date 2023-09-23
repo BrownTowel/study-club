@@ -1,0 +1,218 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//***** Migrate *******************************
+// $ npx prisma migrate dev
+// Environment variables loaded from .env
+// Prisma schema loaded from prisma/schema.prisma
+// Datasource "db": MySQL database "prisma_study_club" at "localhost:3306"
+
+// ✔ Enter a name for the new migration: … first-migrate
+// Applying migration `20230821124458_first_migrate`
+
+// The following migration(s) have been created and applied from new schema changes:
+
+// migrations/
+//   └─ 20230821124458_first_migrate/
+//     └─ migration.sql
+
+// Your database is now in sync with your schema.
+
+// Running generate... (Use --skip-generate to skip the generators)
+
+// added 2 packages, and audited 357 packages in 9s
+
+// 125 packages are looking for funding
+//   run `npm fund` for details
+
+// found 0 vulnerabilities
+
+// ✔ Generated Prisma Client (5.1.1 | library) to ./node_modules/@prisma/client in 259ms
+
+
+//***** ON UPDATE CURRENT_TIMESTAMP *******************************
+// https://github.com/prisma/prisma/issues/17489
+
+
+//***** @prisma/client *******************************
+// $ npx prisma generate
+// Environment variables loaded from .env
+// Prisma schema loaded from prisma/schema.prisma
+
+// ✔ Generated Prisma Client (5.1.1 | library) to ./node_modules/@prisma/client in 293ms
+// You can now start using Prisma Client in your code. Reference: https://pris.ly/d/client
+// ```
+// import { PrismaClient } from '@prisma/client'
+// const prisma = new PrismaClient()
+// ```
+
+
+// @TODO
+// createTimestamp / updateTimestamp
+// 9h差が出る
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env( "DATABASE_URL" )
+}
+
+enum DefaultSetting {
+  true
+  false
+}
+
+model Account {
+  id                      Int       @id @db.UnsignedInt @default(autoincrement())
+  address                 String    @unique @db.VarChar(64)
+  registerName            String    @db.VarChar(32) @map("register_name")
+  displayName             String    @db.VarChar(32) @map("display_name")
+  class                   String    @db.Char(2)
+  status                  String    @db.Char(2)
+  password                String?   @db.Char(64)
+  remarks                 String?   @db.VarChar(1024)
+  loginDatetime           String?   @db.Char(14) @map("login_datetime")
+  videoConnectionDatetime String?   @db.Char(14) @map("video_connection_datetime")
+  createAccountId         Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp         DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId         Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp         DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  readings                ChatReadingInfo[] @relation("Readings")
+  @@map("account")
+}
+
+model FileInfo {
+  id              Int       @id @db.UnsignedInt @default(autoincrement())
+  managementId    Int       @db.UnsignedInt @map("management_id")
+  sequenceNumber  Int       @db.UnsignedTinyInt @map("sequence_number")
+  class           String    @db.Char(2)
+  name            String    @db.Char(18)
+  extension       String    @db.VarChar(10)
+  isDownload      Boolean   @db.TinyInt @default(false) @map("is_download")
+  createAccountId Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  @@unique([ class, managementId, sequenceNumber ])
+  @@map("file_info")
+}
+
+model Chat {
+  id                Int      @id @db.UnsignedInt @default(autoincrement())
+  content           String?  @db.VarChar(4000)
+  sequenceNumber    Int      @db.UnsignedTinyInt @unique @map("sequence_number")
+  deletedDatetime   String?  @db.Char(14) @map("deleted_datetime")
+  createAccountId   Int      @db.UnsignedInt @map("create_account_id")
+  createTimestamp   DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId   Int      @db.UnsignedInt @map("update_account_id")
+  updateTimestamp   DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  @@map("chat")
+}
+
+model ChatReadingInfo {
+  id                Int       @id @db.UnsignedInt @default(autoincrement())
+  accountId         Int       @db.UnsignedInt @map("account_id")
+  sequenceNumber    Int?      @db.UnsignedInt @map("sequence_number")
+  createAccountId   Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp   DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId   Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp   DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  account           Account   @relation(name: "Readings", fields: [accountId], references: [id])
+  @@map("chat_reading_info")
+}
+
+model Calendar {
+  id                Int       @id @db.UnsignedInt @default(autoincrement())
+  title             String    @db.Char(6) @unique
+  status            String    @db.Char(2) @default("02")
+  answerFormatClass String    @db.Char(2) @map("answer_format_class")
+  createAccountId   Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp   DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId   Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp   DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  details           CalendarDetail[]  @relation("Details")
+  anonymousAnswers  AnonymousAnswer[] @relation("AnonymousAnswers")
+  @@map("calendar")
+}
+
+model CalendarDetail {
+  id                      Int       @id @db.UnsignedInt @default(autoincrement())
+  calendarId              Int       @db.UnsignedInt @map("calendar_id")
+  day                     String    @db.Char(2)
+  status                  String    @db.Char(2) @default("03")
+  title                   String    @db.Char(32)
+  comment                 String?   @db.VarChar(100)
+  isEaseEditRestrictions  Boolean   @db.TinyInt @default(false) @map("is_ease_edit_restrictions")
+  activityClass           String    @db.Char(2) @default("01") @map("activity_class")
+  createAccountId         Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp         DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId         Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp         DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  calendar                Calendar  @relation(name: "Details", fields: [calendarId], references: [id])
+  activityRequests        ActivityRequest[] @relation("ActivityRequests")
+  @@unique([ calendarId, day ])
+  @@map("calendar_detail")
+}
+
+model ActivityRequest {
+  id                Int       @id @db.UnsignedInt @default(autoincrement())
+  calendarDetailId  Int       @db.UnsignedInt @map("calendar_detail_id")
+  accountId         Int       @db.UnsignedInt @map("account_id")
+  answerClass       String    @db.Char(2) @map("answer_class")
+  comment           String?   @db.VarChar(100)
+  createAccountId   Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp   DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId   Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp   DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  calendarDetail    CalendarDetail  @relation(name: "ActivityRequests", fields: [calendarDetailId], references: [id])
+  @@unique([ calendarDetailId, accountId ])
+  @@map("activity_request")
+}
+
+model AnonymousAnswer {
+  id                Int       @id @db.UnsignedInt @default(autoincrement())
+  calendarId        Int       @db.UnsignedInt @map("calendar_id")
+  answerCryptString String?   @db.Text @map("answer_crypt_string")
+  createAccountId   Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp   DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId   Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp   DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  calendar          Calendar  @relation(name: "AnonymousAnswers", fields: [calendarId], references: [id])
+  @@map("anonymous_answer")
+}
+
+model Notice {
+  id                    Int       @id @db.UnsignedInt @default(autoincrement())
+  class                 String    @db.Char(2)
+  isPublish             Boolean   @db.TinyInt @default(false) @map("is_publish")
+  isListDisplay         Boolean   @db.TinyInt @default(false) @map("is_list_display")
+  title                 String    @db.Char(32)
+  description           String?   @db.Char(100)
+  publishStartDatetime  String?   @db.Char(14) @map("publish_start_datetime")
+  publishEndDatetime    String?   @db.Char(14) @map("publish_end_datetime")
+  url                   String?   @db.Char(64) @unique
+  content               String?   @db.Text
+  remarks               String?   @db.VarChar(1024)
+  createAccountId       Int       @db.UnsignedInt @map("create_account_id")
+  createTimestamp       DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId       Int       @db.UnsignedInt @map("update_account_id")
+  updateTimestamp       DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  @@map("notice")
+}
+
+model NoticePreview {
+  id              Int      @id @db.UnsignedInt @default(autoincrement())
+  noticeId        Int      @db.UnsignedInt @map("notice_id")
+  title           String   @db.Char(32)
+  description     String?  @db.Char(100)
+  content         String?  @db.Text
+  accessCode      String   @db.Char(20) @map("access_code")
+  createAccountId Int      @db.UnsignedInt @map("create_account_id")
+  createTimestamp DateTime  @db.Timestamp(0) @default(now()) @map("create_timestamp")
+  updateAccountId Int      @db.UnsignedInt @map("update_account_id")
+  updateTimestamp DateTime  @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0)")) @map("update_timestamp")
+  @@map("notice_preview")
+}

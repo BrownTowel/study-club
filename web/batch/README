@@ -1,0 +1,209 @@
+スクリプトで実装してcron実行でもいいが、C言語とかで実装・実行でもいい
+shellまたはluaから実行でもいい.
+
+機能
+* 活動日通知機能
+* ユーザー集計機能
+* サーバーリソース集計機能
+
+* 活動日通知機能
+  ※ 実行時間未定、通知方法未定だがLine通知する場合は何かアカウント作成等の付帯作業があると思われる.
+  1. サーバーの現在日時をJSTで取得し時刻型(time_t)の変数として格納、yyyyMMとddの数値を取得し変数に格納する.
+  2. 前日通知を行うためddに+1加算を行う.
+  3. yyyyMMとddを数値型から文字列に変換し変数に格納、ddが一桁の場合はパディング処理を行う.
+  4. カレンダーtblとカレンダー詳細tblを内部結合し、「カレンダー.ステータス」が「01」かつ「カレンダー.タイトル」「カレンダー詳細.日」が3で用意した文字列型の変数との完全一致を条件にDBへの問い合わせを行いデータを取得する.
+     存在する場合は5へ. 存在しない場合は約86400秒 (`sleep(86400)`) スリープ処理し1に戻る.
+  5. 通知送信処理
+
+
+* ユーザー集計機能
+  ※ 実行時間未定、通知先はチャットで良いと思われる(方法未調査).
+  1. サーバーの現在日時をJSTで取得し時刻型(time_t)の変数として格納、yyyyMMとddの数値を取得し変数に格納する.
+  2. yyyyMMとddを数値型から文字列に変換し変数に格納、ddが一桁の場合はパディング処理を行う.
+  3. カレンダーtblとカレンダー詳細tblを内部結合し、「カレンダー.ステータス」が「01」かつ「カレンダー.タイトル」「カレンダー詳細.日」が3で用意した文字列型の変数との完全一致を条件にDBへの問い合わせを行いデータを取得する.
+     存在する場合は4へ. 存在しない場合は約86400秒 (`sleep(86400)`) スリープ処理し1に戻る.
+  4. 3で取得したデータの「カレンダー詳細.活動区分」から集計時刻までスリープ処理を行う.
+  5. アカウントtblの「アカウント.ビデオ接続日時」が活動開始時刻 < かつ 現在時刻 > に一致することを条件にDBへの問い合わせを行いデータを取得する.
+  6. 抽出したアカウント情報から送信データを生成しチャットに送信する.
+
+
+* サーバーリソース集計機能
+
+
+
+
+#########################################
+
+スリープよりタイマー処理のほうがよさげ
+
+時間処理の落とし穴 - 時間精度とtick
+http://proger.blog10.fc2.com/blog-entry-64.html
+
+
+#########################################
+
+C 環境構築メモ
+
+コンパイラはVsCodeの拡張機能を使ってインストールする.
+WSL上にどう展開されるのかは別途確認.
+
+
+* WSLのgccバージョン
+$ gcc --version
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+普通に動くのか「Hello world」出力で確認.
+
+$ mkdir clang
+$ cd clang
+$ vi hello.c
+
+* hello.c
+#include <stdio.h>
+
+int main( int argc, char *argv[] )
+{
+  printf("Hello World\n");
+
+  return 0;
+}
+
+$ gcc -o ./hello.out ./hello.c
+
+$ ./hello.out
+Hello World
+
+
+* VPCのCコンパイラ
+デフォルトでは見つからなかった
+
+aptで検索
+$ apt-cache search gcc | grep gcc
+gcc-9 - GNU C compiler
+
+gcc-8 は無かったが、gcc-9が出てきたのでバージョン9を想定して構築することにする.
+
+* VsCode
+拡張機能インストール
+** C/C++
+** Code Runner
+
+Code-runner: Run In Terminal
+Whether to run code in Integrated Terminal.
+
+
+#########################################
+
+* headerファイルの準備
+
+探す
+$ ls -la /usr/include/{探すもの}
+
+mysql.h 用意
+
+mysqlの公式ページ
+https://dev.mysql.com/downloads/c-api/
+
+ubuntu (apt) 向けのインストールガイド
+https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/
+
+libmysqlclient-dev を検索
+$ apt-cache search libmysqlclient-dev
+default-libmysqlclient-dev - MySQL database development files (metapackage)
+libmysqlclient-dev - MySQL database development files
+libglpk40 - linear programming kit with integer (MIP) support
+libmariadb-dev-compat - MariaDB Connector/C, compatibility symlinks
+
+今回は mariadb なので libmariadb-dev-compat が名前的に正解ぽいが当初の予定通り libmysqlclient-dev をインストールする.
+ダメだったら mariadb 向けのほうをインストールする.
+
+
+インストール
+$ sudo apt-get install libmysqlclient-dev
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  docker-scan-plugin libconfig-inifiles-perl libfwupdplugin1 libsnappy1v5 libxmlb1
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  libssl-dev
+Suggested packages:
+  libssl-doc
+The following NEW packages will be installed:
+  libmysqlclient-dev libssl-dev
+0 upgraded, 2 newly installed, 0 to remove and 23 not upgraded.
+Need to get 3226 kB of archives.
+After this operation, 18.2 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libssl-dev amd64 1.1.1f-1ubuntu2.19 [1584 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libmysqlclient-dev amd64 8.0.34-0ubuntu0.20.04.1 [1642 kB]
+Fetched 3226 kB in 2s (1454 kB/s)
+Selecting previously unselected package libssl-dev:amd64.
+(Reading database ... 40152 files and directories currently installed.)
+Preparing to unpack .../libssl-dev_1.1.1f-1ubuntu2.19_amd64.deb ...
+Unpacking libssl-dev:amd64 (1.1.1f-1ubuntu2.19) ...
+Selecting previously unselected package libmysqlclient-dev.
+Preparing to unpack .../libmysqlclient-dev_8.0.34-0ubuntu0.20.04.1_amd64.deb ...
+Unpacking libmysqlclient-dev (8.0.34-0ubuntu0.20.04.1) ...
+Setting up libssl-dev:amd64 (1.1.1f-1ubuntu2.19) ...
+Setting up libmysqlclient-dev (8.0.34-0ubuntu0.20.04.1) ...
+Processing triggers for man-db (2.9.1-1) ...
+
+
+確認
+$ ls -la /usr/include/mysql
+total 420
+drwxr-xr-x  2 root root   4096 Sep 16 11:05 .
+drwxr-xr-x 38 root root   4096 Sep 16 11:05 ..
+-rw-r--r--  1 root root   8354 Jun 22 20:07 client_plugin.h
+-rw-r--r--  1 root root   5730 Jun 22 20:07 errmsg.h
+-rw-r--r--  1 root root   3030 Jun 22 20:07 field_types.h
+-rw-r--r--  1 root root   4407 Jun 22 20:07 my_command.h
+-rw-r--r--  1 root root   3646 Jun 22 20:07 my_compress.h
+-rw-r--r--  1 root root   2069 Jun 22 20:07 my_list.h
+-rw-r--r--  1 root root  33483 Jun 22 20:07 mysql.h
+-rw-r--r--  1 root root  37337 Jun 22 20:07 mysql_com.h
+-rw-r--r--  1 root root   3554 Jun 22 20:07 mysql_time.h
+-rw-r--r--  1 root root   1085 Jul 21 22:03 mysql_version.h
+-rw-r--r--  1 root root 261185 Jul 21 22:03 mysqld_error.h
+-rw-r--r--  1 root root   7205 Jul 21 22:03 mysqlx_ername.h
+-rw-r--r--  1 root root   4112 Jul 21 22:03 mysqlx_error.h
+-rw-r--r--  1 root root   1807 Jul 21 22:03 mysqlx_version.h
+-rw-r--r--  1 root root   6866 Jun 22 20:07 plugin_auth_common.h
+-rw-r--r--  1 root root   3827 Jun 22 20:07 udf_registration_types.h
+
+
+コンパイルエラー
+# cd "/home/yt/repositories/app/web/batch/" && gcc main.c -o main && "/home/yt/repositories/app/web/batch/"main
+/usr/bin/ld: /tmp/ccInc6oq.o: in function `main':
+main.c:(.text+0x12c): undefined reference to `mysql_init'
+/usr/bin/ld: main.c:(.text+0x168): undefined reference to `mysql_real_connect'
+/usr/bin/ld: main.c:(.text+0x180): undefined reference to `mysql_error'
+collect2: error: ld returned 1 exit status
+
+$ mysql_config --libs
+-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -ldl -lssl -lcrypto -lresolv -lm -lrt
+
+記事を参考に下記でコンパイルが通った（ 参考記事: https://financial-it-engineer.hatenablog.com/entry/20141011/1413014403 ）
+$ sudo gcc -o main main.c -L/usr/lib/x86_64-linux-gnu -lmysqlclient
+
+$ ./main
+**** Begin ****
+0916
+Connection: mysql://localhost:3306/study_club
+**** End ****
+
+
+#########################################
+
+Memo.
+
+gdb 起動等
+https://qiita.com/arene-calix/items/a08363db88f21c81d351
+
+
+

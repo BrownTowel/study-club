@@ -1,0 +1,43 @@
+$ sudo curl -L "https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+
+yt@LAPTOP-3SEP6CHA:~/repositories/study-club/.Docker$ docker-compose up -d
+Building db
+[+] Building 23.0s (9/9) FINISHED                                                                        docker:default
+ => [internal] load .dockerignore                                                                                  0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load build definition from Dockerfile                                                               0.0s
+ => => transferring dockerfile: 164B                                                                               0.0s
+ => [internal] load metadata for docker.io/library/mariadb:10.6.14                                                 2.5s
+ => [1/4] FROM docker.io/library/mariadb:10.6.14@sha256:9156c6c088e554b19bdcad795f5b536d5796766806935da63d1268bc  18.8s
+ => => resolve docker.io/library/mariadb:10.6.14@sha256:9156c6c088e554b19bdcad795f5b536d5796766806935da63d1268bc6  0.0s
+ => => sha256:9156c6c088e554b19bdcad795f5b536d5796766806935da63d1268bc647f05b9 979B / 979B                         0.0s
+ => => sha256:0ecd837a038b6c64a4a046cec70618e306ecbb2d7c044c746912297dae1e3a93 1.99kB / 1.99kB                     0.0s
+ => => sha256:cf6aa23aa4ff3d40153afcd1cae6e311a4530f54041f25a909a1c9b7339fa5b3 10.36kB / 10.36kB                   0.0s
+ => => sha256:7007490126efaae58924972668256aaeb4858e6c4537eb4257e1978719b958c7 28.58MB / 28.58MB                   7.9s
+ => => sha256:4d07cf421114a5a250c403ce9a3a93b7298c13ad1c6a57fd1ffdb4e2755868ce 1.74kB / 1.74kB                     1.5s
+ => => sha256:7f49892c3e51cdbc8353172618365a3b19a5ef5e2f91ffc7a8ea05aedb7643d0 7.12MB / 7.12MB                     2.9s
+ => => sha256:c5daef2619c33583cbfa06f371ab8ff5b045c56db124222906abe3996aaa5eb1 149B / 149B                         1.9s
+ => => sha256:c59c36b808a2839fb44ca1b6c4ca60b409c00345ee3567dce18bfb97b8b6c7c0 324B / 324B                         2.3s
+ => => sha256:d12450bcf979a36f64c4019a5e4a6b3bd8b7a00c86b142863fcc15130b141516 85.92MB / 85.92MB                  12.2s
+ => => sha256:11011cbf6a2acf48a7b6646cec4b8df7d275284a50dbcab99acda9240ed06f47 3.57kB / 3.57kB                     3.4s
+ => => sha256:cc6463f1b65f394ee1e47b0eaf189c705f9f31b5aa8910e8ec1848d1b364ced9 7.57kB / 7.57kB                     3.8s
+ => => extracting sha256:7007490126efaae58924972668256aaeb4858e6c4537eb4257e1978719b958c7                          1.8s
+ => => extracting sha256:4d07cf421114a5a250c403ce9a3a93b7298c13ad1c6a57fd1ffdb4e2755868ce                          0.0s
+ => => extracting sha256:7f49892c3e51cdbc8353172618365a3b19a5ef5e2f91ffc7a8ea05aedb7643d0                          1.0s
+ => => extracting sha256:c5daef2619c33583cbfa06f371ab8ff5b045c56db124222906abe3996aaa5eb1                          0.0s
+ => => extracting sha256:c59c36b808a2839fb44ca1b6c4ca60b409c00345ee3567dce18bfb97b8b6c7c0                          0.0s
+ => => extracting sha256:d12450bcf979a36f64c4019a5e4a6b3bd8b7a00c86b142863fcc15130b141516                          6.1s
+ => => extracting sha256:11011cbf6a2acf48a7b6646cec4b8df7d275284a50dbcab99acda9240ed06f47                          0.0s
+ => => extracting sha256:cc6463f1b65f394ee1e47b0eaf189c705f9f31b5aa8910e8ec1848d1b364ced9                          0.0s
+ => [internal] load build context                                                                                  0.1s
+ => => transferring context: 1.28kB                                                                                0.0s
+ => [2/4] RUN touch /var/log/mysql/mysqld.log                                                                      0.9s
+ => [3/4] ADD my.cnf /etc/mysql/conf.d/my.cnf                                                                      0.1s
+ => [4/4] RUN chmod 644 /etc/mysql/my.cnf                                                                          0.5s
+ => exporting to image                                                                                             0.1s
+ => => exporting layers                                                                                            0.1s
+ => => writing image sha256:54ceff7b4c864844863f15d8434438684adfde9d217b6970e8b04bcf226c0ac1                       0.0s
+ => => naming to docker.io/library/docker_db                                                                       0.0s
+WARNING: Image for service db was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating db ... done

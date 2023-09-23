@@ -1,0 +1,412 @@
+npm install react-router-dom
+
+# mui
+# Default With styled-components
+npm install @mui/material @mui/styled-engine-sc styled-components
+npm install @emotion/react @emotion/styled
+
+# Roboto font
+npm install @fontsource/roboto
+
+# Icons
+npm install @mui/icons-material
+
+# Date and Time Pickers - Getting Started
+npm install @mui/x-date-pickers
+npm install dayjs
+
+# axios
+npm install -y axios
+
+# next-auth
+$ npm install next-auth
+
+added 23 packages, and audited 1567 packages in 18s
+
+254 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+# Redux
+$ npm install --save redux react-redux
+
+added 5 packages, and audited 1590 packages in 9s
+
+259 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+$ npm install --save @reduxjs/toolkit
+npm install --save @reduxjs/toolkit
+
+added 3 packages, and audited 1593 packages in 9s
+
+259 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+# react-hook-form
+$ npm install --save react-hook-form
+added 1 package, and audited 1594 packages in 5s
+
+260 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+$ npm install --save yup
+added 5 packages, and audited 1599 packages in 5s
+
+261 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+$ npm install --save @hookform/resolvers
+added 1 package, and audited 1600 packages in 6s
+
+261 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+$ npm install --save date-fns
+
+added 1 package, and audited 1601 packages in 27s
+
+262 packages are looking for funding
+  run `npm fund` for details
+
+7 vulnerabilities (1 moderate, 6 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+$ npm install --save date-fns-tz
+
+added 1 package, and audited 1602 packages in 7s
+
+262 packages are looking for funding
+  run `npm fund` for details
+
+7 vulnerabilities (1 moderate, 6 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+
+# cookie
+$ npm install react-cookie
+added 5 packages, and audited 1572 packages in 5s
+
+254 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+# html-react-parser
+$ npm install html-react-parser
+
+added 12 packages, and audited 1584 packages in 6s
+
+259 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+$ npm install --save styled-jsx
+
+added 1 package, changed 1 package, and audited 1585 packages in 7s
+
+259 packages are looking for funding
+  run `npm fund` for details
+
+6 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+
+
+
+
+## next.js ##########
+
+$ npm install next-auth
+
+added 12 packages, and audited 328 packages in 6s
+
+124 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+$ npm install jsonwebtoken
+
+
+added 6 packages, and audited 334 packages in 16s
+
+124 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm install --save @types/jsonwebtoken
+
+added 1 package, and audited 360 packages in 2s
+
+126 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+## type script ###########
+https://qiita.com/mangano-ito/items/75e65071c9c482ddc335
+
+$ npm install --save typescript ts-node
+
+added 16 packages, and audited 350 packages in 3s
+
+124 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm install --save tsconfig-paths
+
+added 2 packages, changed 2 packages, and audited 352 packages in 1s
+
+124 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm install --save nanoid
+
+added 1 package, changed 1 package, and audited 353 packages in 2s
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm install prisma --save-dev
+
+added 2 packages, and audited 355 packages in 6s
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npx prisma init --datasource-provider mysql
+
+✔ Your Prisma schema was created at prisma/schema.prisma
+  You can now open it in your favorite editor.
+
+warn You already have a .gitignore file. Don't forget to add `.env` in it to not commit any private information.
+
+Next steps:
+1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
+2. Run prisma db pull to turn your database schema into a Prisma schema.
+3. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+
+More information in our documentation:
+https://pris.ly/d/getting-started
+
+
+
+$ npm install --save date-fns
+
+added 1 package, and audited 358 packages in 9s
+
+126 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+$ npm install --save date-fns-tz
+
+added 1 package, and audited 359 packages in 2s
+
+126 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm uninstall --save nanoid
+
+removed 1 package, and audited 359 packages in 807ms
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+$ npm install --save nanoid@3.3.4
+
+added 1 package, and audited 360 packages in 902ms
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+
+##  websocket  ################
+
+$ npm install --save ws
+
+added 1 package, and audited 361 packages in 10s
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (1 low, 2 moderate)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+$ npm i --save-dev @types/ws
+
+added 1 package, and audited 362 packages in 2s
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (1 low, 2 moderate)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+
+$ npm install --save socket.io
+
+added 18 packages, and audited 380 packages in 4s
+
+125 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (1 low, 2 moderate)
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+$ npm install --save socket.io-client
+
+added 7 packages, and audited 1609 packages in 14s
+
+262 packages are looking for funding
+  run `npm fund` for details
+
+12 vulnerabilities (1 low, 4 moderate, 6 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+
+##  JWT openssl  ################
+$ mkdir ./resources/rsa/
+$ openssl genrsa -out ./resources/rsa/private.key 2048
+$ openssl rsa -in ./resources/rsa/private.key -pubout -out ./resources/rsa/public.key
+
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+$ mkdir ./resources/rsa/
+
+$ openssl genrsa -out ./resources/rsa/private.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+...............................................................+++++
+.....+++++
+e is 65537 (0x010001)
+
+$ openssl rsa -in ./resources/rsa/private.key -pubout -out ./resources/rsa/public.key
+writing RSA key
+
+
